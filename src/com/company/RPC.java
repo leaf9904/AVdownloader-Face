@@ -40,7 +40,7 @@ public class RPC {
         obj.put("method", "aria2.addUri");
         obj.put("params", uri);
         System.out.println(obj);
-        JSONObject w=doPost("http://167.99.97.72:6800/jsonrpc",obj);
+        JSONObject w=doPost("http://127.0.0.1:6800/jsonrpc",obj);
         System.out.println(w);
     }
     public static void tellrpc(int i) {
@@ -50,7 +50,7 @@ public class RPC {
         obj.put("id", ID);
         obj.put("method", "aria2.tellActive");
         System.out.println(obj);
-        JSONObject w=doPost("http://167.99.97.72:6800/jsonrpc",obj);
+        JSONObject w=doPost("http://127.0.0.1:6800/jsonrpc",obj);
         System.out.println(w);
     }
 }
