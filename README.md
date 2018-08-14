@@ -11,7 +11,7 @@ Python脚本下载：链接：https://pan.baidu.com/s/1hw1paM5lbRvm5aAwRXaNoA �
 Python脚本原贴：https://www.south-plus.net/read.php?tid-423268.html
 
 AVdownloader-Face
->一个基于java的av人脸识别自动自动下载器
+>一个基于java的av人脸识别自动下载器
 >
 >需要安装aria2并开启rpc端口
 >
