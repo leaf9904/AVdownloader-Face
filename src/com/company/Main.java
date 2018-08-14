@@ -50,8 +50,8 @@ public class Main {
             Document doc = null,Doc;
             Document doc1 = null;
             System.out.println(downloaded);
-            for(int i=1;i<=10;i++){
-                doc = Jsoup.connect("https://www.javbus.com/page/"+i).get();
+            for(int i=1;i<=999999999;i++){
+                doc = Jsoup.connect("https://www.javbus.com").get();
                 Elements links = ((Element) doc).select("a[href]");
                 int b=0,ID=1234;
                 for(Element link : links){
@@ -71,23 +71,27 @@ public class Main {
                                     if((x!=null)&&x.indexOf("cover")!=-1){
                                         System.out.println(x);
                                         com.company.Images.Download(x);
-                                        Thread.sleep(1000);
+                                        Thread.sleep(1500);
                                     }
                                 }
-                                String bool="error";
-                                while ((bool.equals("error"))){
-                                    String[] args1 = new String[] { "python3", "/root/test.py", "1.jpg","90","28"};
+                                String bool="error",line=null;
+                                 while ((bool.indexOf("True")==-1)&&(bool.indexOf("False")==-1)){
+                                    String[] args1 = new String[] { "python3", "/root/main_facepp.py", "1.jpg","65","40"};
                                     Process pr=Runtime.getRuntime().exec(args1);
-                                    BufferedReader ps = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-                                    String line = ps.readLine();
+                                    StreamCaptureThread errorStream = new StreamCaptureThread(pr.getErrorStream());
+                                    StreamCaptureThread outputStream = new StreamCaptureThread(pr.getInputStream());
+                                    new Thread(errorStream).start();
+                                    new Thread(outputStream).start();
+                                    pr.waitFor();
+                                    in.close();
+                                    line=outputStream.output.toString();
                                     bool=line;
-                                    if (line.equals("True"))
+                                    System.out.println(line);
+                                    if (line.indexOf("True")!=-1)
                                         beauty=true;
                                     //System.out.println(beauty);
                                     //System.out.println(line);
 
-                                    in.close();
-                                    pr.waitFor();
                                     }
                                 System.out.println(beauty);
                                 if(beauty) {
@@ -118,6 +122,7 @@ public class Main {
                         b++;
                     }
                 }
+                Thread.sleep(100000);
             }
 
         } catch (IOException e) {
