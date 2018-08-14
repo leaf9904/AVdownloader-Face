@@ -37,7 +37,7 @@ public class Main {
 //        prop.setProperty("https.proxyHost", "192.168.137.1");
 //        prop.setProperty("https.proxyPort", "1080");
         //String encoding = "UTF-8";
-        File file = new File("/root/123.txt");
+        File file = new File("/root/123.txt");//读取已下载影片
         Long filelength = file.length();
         byte[] filecontent = new byte[filelength.intValue()];
         String magnet,size,cache,downloaded="";
@@ -50,25 +50,25 @@ public class Main {
             Document doc = null,Doc;
             Document doc1 = null;
             System.out.println(downloaded);
-            for(int i=1;i<=999999999;i++){
-                doc = Jsoup.connect("https://www.javbus.com").get();
+            for(int i=1;i<=999999999;i++){//循环监测首页内容
+                doc = Jsoup.connect("https://www.javbus.com").get();//读取首页
                 Elements links = ((Element) doc).select("a[href]");
                 int b=0,ID=1234;
                 for(Element link : links){
                     String linkHref =(link.attr("href"));
                     String a=OpenUrl(linkHref);
-                    if((a!=null)&&(a.indexOf("javascript")==-1)&&(a.indexOf("page")==-1)&&(a.indexOf("-")!=-1)){
+                    if((a!=null)&&(a.indexOf("javascript")==-1)&&(a.indexOf("page")==-1)&&(a.indexOf("-")!=-1)){//选择链接
                         if (b>=17&&(b<=46)){
                             //System.out.println(a);
                             if(downloaded.indexOf(a) == -1){
                                 Doc = Jsoup.connect(a).get();
-                                boolean beauty=false;
+                                boolean beauty=false;//创建颜值阈值布尔变量
                                 Elements Images = ((Element) Doc).select("a[href]");
                                  //System.out.println(Images);
                                 for(Element Image: Images) {
                                     String ImageHref = (Image.attr("href"));
                                     String x = OpenUrl(ImageHref);
-                                    if((x!=null)&&x.indexOf("cover")!=-1){
+                                    if((x!=null)&&x.indexOf("cover")!=-1){//下载首页图片
                                         System.out.println(x);
                                         com.company.Images.Download(x);
                                         Thread.sleep(1500);
@@ -76,7 +76,7 @@ public class Main {
                                 }
                                 String bool="error",line=null;
                                  while ((bool.indexOf("True")==-1)&&(bool.indexOf("False")==-1)){
-                                    String[] args1 = new String[] { "python3", "/root/main_facepp.py", "1.jpg","65","40"};
+                                    String[] args1 = new String[] { "python3", "/root/main_facepp.py", "1.jpg","65","40"};//调用Python脚本完成人脸识别
                                     Process pr=Runtime.getRuntime().exec(args1);
                                     StreamCaptureThread errorStream = new StreamCaptureThread(pr.getErrorStream());
                                     StreamCaptureThread outputStream = new StreamCaptureThread(pr.getInputStream());
@@ -94,24 +94,24 @@ public class Main {
 
                                     }
                                 System.out.println(beauty);
-                                if(beauty) {
+                                if(beauty) {//如果颜值过关则加入下载
                                     System.out.println(a);
-                                    cache=Magnet.Magnet(a);
-                                    int intIndex = cache.indexOf("~");
+                                    cache=Magnet.Magnet(a);//使用Magnet方法下载磁力链接和大小
+                                    int intIndex = cache.indexOf("~");//分离磁力链接和大小
                                     size=cache.substring(0,intIndex-2);
                                     magnet=cache.substring(intIndex+1,cache.length());
                                     Size=Double.parseDouble(size);
-                                    disk=getDiskInfo();
+                                    disk=getDiskInfo();//读取磁盘大小
                                     while((Size+1)>=disk){
                                         Thread.sleep(100000);
                                         //System.out.println(1000);
-                                        disk=getDiskInfo();
+                                        disk=getDiskInfo();//等待下载完成磁盘清空
                                     }
-                                    RPC.addrpc(magnet,ID);
+                                    RPC.addrpc(magnet,ID);//发送rpc命令到aria2端口
                                     RPC.tellrpc(ID);
                                     ID++;
                                     downloaded=a+downloaded;
-                                    FileWriter fw = new FileWriter("/root/123.txt", true);
+                                    FileWriter fw = new FileWriter("/root/123.txt", true);//写入已下载列表
                                     BufferedWriter bw = new BufferedWriter(fw);
                                     bw.write(a);
                                     bw.close();
