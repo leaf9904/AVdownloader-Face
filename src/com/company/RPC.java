@@ -31,7 +31,7 @@ public class RPC {
         }
         return response;
     }
-    public static void addrpc(String Uri,int i) {
+    public static void addrpc(String Uri,int i) {//发送磁力链接到本地aria2 RPC端口
         String ID= String.valueOf(i);
         String uri =("[[\""+Uri+"\"]]");
         JSONObject obj = new JSONObject();
@@ -43,7 +43,7 @@ public class RPC {
         JSONObject w=doPost("http://127.0.0.1:6800/jsonrpc",obj);
         System.out.println(w);
     }
-    public static void tellrpc(int i) {
+    public static void tellrpc(int i) {//使用aria2.tellActive方法激活下载器
         String ID= String.valueOf(i);
         JSONObject obj = new JSONObject();
         obj.put("jsonrpc", "2.0");
